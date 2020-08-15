@@ -201,7 +201,7 @@ void SettingWifi::GetTimeZone()
     int id=ui->TimeZoneCombo->currentIndex();
     QString timezoneString;
     QByteArray timezoneID;
-    if(zoneTime.isDaylightTime()){
+    if(true){
     switch(id){
     case Country::UTC:
         timezoneString="UTC";
@@ -242,48 +242,48 @@ void SettingWifi::GetTimeZone()
         break;
      }
     }
-  else if((!zoneTime.isDaylightTime())){
-        switch(id){
-        case Country::UTC:
-            timezoneString="UTC";
-            timezoneID=timezoneString.toLatin1();
-            timezone=QTimeZone(timezoneID);
-            break;
-        case Country::China:
-            timezoneString="UTC+08:00";
-            timezoneID=timezoneString.toLatin1();
-            timezone=QTimeZone(timezoneID);
-            break;
-        case Country::America:
-            timezoneString="UTC-05:00";
-            timezoneID=timezoneString.toLatin1();
-            timezone=QTimeZone(timezoneID);
-            break;
-        case Country::England:
-            timezoneString="UTC+00:00";
-            timezoneID=timezoneString.toLatin1();
-            timezone=QTimeZone(timezoneID);
-            break;
-        case Country::Germany:
-            timezoneString="UTC+01:00";
-            timezoneID=timezoneString.toLatin1();
-            timezone=QTimeZone(timezoneID);
-            break;
-        case Country::Netherlands:
-            timezoneString="UTC+01:00";
-            timezoneID=timezoneString.toLatin1();
-            timezone=QTimeZone(timezoneID);
-            break;
-        case Country::Australia:
-            timezoneString="UTC+10:00";
-            timezoneID=timezoneString.toLatin1();
-            timezone=QTimeZone(timezoneID);
-            break;
-        default:
-            break;
+//  else if((!zoneTime.isDaylightTime())){
+//        switch(id){
+//        case Country::UTC:
+//            timezoneString="UTC";
+//            timezoneID=timezoneString.toLatin1();
+//            timezone=QTimeZone(timezoneID);
+//            break;
+//        case Country::China:
+//            timezoneString="UTC+08:00";
+//            timezoneID=timezoneString.toLatin1();
+//            timezone=QTimeZone(timezoneID);
+//            break;
+//        case Country::America:
+//            timezoneString="UTC-05:00";
+//            timezoneID=timezoneString.toLatin1();
+//            timezone=QTimeZone(timezoneID);
+//            break;
+//        case Country::England:
+//            timezoneString="UTC+00:00";
+//            timezoneID=timezoneString.toLatin1();
+//            timezone=QTimeZone(timezoneID);
+//            break;
+//        case Country::Germany:
+//            timezoneString="UTC+01:00";
+//            timezoneID=timezoneString.toLatin1();
+//            timezone=QTimeZone(timezoneID);
+//            break;
+//        case Country::Netherlands:
+//            timezoneString="UTC+01:00";
+//            timezoneID=timezoneString.toLatin1();
+//            timezone=QTimeZone(timezoneID);
+//            break;
+//        case Country::Australia:
+//            timezoneString="UTC+10:00";
+//            timezoneID=timezoneString.toLatin1();
+//            timezone=QTimeZone(timezoneID);
+//            break;
+//        default:
+//            break;
 
-        }
-    }
+//        }
+//    }
 
 }
 
