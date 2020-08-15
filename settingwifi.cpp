@@ -198,6 +198,9 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
 {
     ShowTime();
     ClockTimer->start();
+    QByteArray id=ui->TimeZoneCombo->currentText().toLatin1();
+    qDebug()<<ui->TimeZoneCombo->currentText();
+    qDebug()<<id;
     qDebug()<<timezone<<":  "<<timeNow;
 }
 
