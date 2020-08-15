@@ -131,6 +131,13 @@ void SettingWifi::on_Cancel_clicked()
 
 void SettingWifi::on_OK_clicked()
 {
+    if(ui->SSIDInput->text()==" " || ui->PasswordInput->text()==" ")
+    {
+        QMessageBox msgbox;
+        msgbox.setText("please enter SSID and Password");
+        msgbox.exec();
+        return;
+    }
     _ssid=ui->SSIDInput->text();
     _password=ui->PasswordInput->text();
     ui->InputWidget->hide();
@@ -180,7 +187,7 @@ void SettingWifi::ShowTime()
     text[5]=' ';}
     ui->Clock->QLCDNumber::display(text);
 
-    qDebug()<<timezone<<":  "<<timeNow;
+
 }
 
 
@@ -188,7 +195,7 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
 {
     ShowTime();
     ClockTimer->start();
-
+    qDebug()<<timezone<<":  "<<timeNow;
 }
 
 

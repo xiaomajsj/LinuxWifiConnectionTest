@@ -21,10 +21,10 @@
 //static const QString WifiSettingPath = "/etc/network/interfaces";
 static const QString CommandList[]={
     "e:/QT Project/LinuxWifiSetting/TestFile.txt",
-    "./home/root/PC-LCD/networkMode.sh wifiMode",
+    "/home/root/PC-LCD/networkMode.sh wifiMode",
     "",
     "",
-    "./home/root/PC-LCD/networkMode.sh simMode",
+    "/home/root/PC-LCD/networkMode.sh simMode",
 };
 
 enum ListType{
