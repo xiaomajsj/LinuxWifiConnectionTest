@@ -299,7 +299,9 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
     QList<QByteArray> list =QTimeZone::availableTimeZoneIds();
     qDebug()<<list;
     QDateTime zoneTime2=QDateTime(QDate::currentDate(),QTime::currentTime());
-    qDebug()<<zoneTime2.isDaylightTime();
+    qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
+
+
 }
 
 
