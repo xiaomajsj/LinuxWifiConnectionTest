@@ -199,7 +199,8 @@ void SettingWifi::ShowTime()
 void SettingWifi::GetTimeZone()
 {
     int id=ui->TimeZoneCombo->currentIndex();
-    QDateTime timeToSetDaylight =QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("UTC")).toLocalTime();
+    QDateTime timeToSetDaylight =QDateTime(QDate::currentDate(),QTime::currentTime());
+    timeToSetDaylight.setTimeSpec(Qt::TimeZone);
     QString timezoneString;
     QByteArray timezoneID;
     if(timeToSetDaylight.isDaylightTime()){
@@ -298,9 +299,12 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
     qDebug()<<timezone<<":  "<<timeNow;
     QList<QByteArray> list =QTimeZone::availableTimeZoneIds();
     qDebug()<<list;
-    QDateTime zoneTime2=QDateTime(QDate::currentDate(),QTime::currentTime()).toLocalTime();
+    QDateTime zoneTime2=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("UTC"));
     qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
-
+    zoneTime2.setTimeSpec(Qt::UTC);
+    qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
+    zoneTime2.setTimeSpec(Qt::TimeZone);
+    qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
 
 }
 
