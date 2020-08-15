@@ -181,7 +181,7 @@ void SettingWifi::ReadOutputData()
 
 void SettingWifi::ShowTime()
 {
-    zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime());
+    zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),Qt::TimeZone);
     //zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("Europe/Berlin"));
 //   QByteArray id=ui->TimeZoneCombo->currentText().toLatin1();
 //   timezone=QTimeZone(id);
@@ -199,11 +199,9 @@ void SettingWifi::ShowTime()
 void SettingWifi::GetTimeZone()
 {
     int id=ui->TimeZoneCombo->currentIndex();
-    QDateTime timeToSetDaylight =QDateTime(QDate::currentDate(),QTime::currentTime());
-    timeToSetDaylight.setTimeSpec(Qt::TimeZone);
     QString timezoneString;
     QByteArray timezoneID;
-    if(timeToSetDaylight.isDaylightTime()){
+    if(zoneTime.isDaylightTime()){
     switch(id){
     case Country::UTC:
         timezoneString="UTC";
@@ -244,7 +242,7 @@ void SettingWifi::GetTimeZone()
         break;
      }
     }
-  else if((!timeToSetDaylight.isDaylightTime())){
+  else if((!zoneTime.isDaylightTime())){
         switch(id){
         case Country::UTC:
             timezoneString="UTC";
@@ -299,22 +297,22 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
     QDateTime d2 = QDateTime::fromString(s, Qt::ISODate).toLocalTime();
     qDebug()<<d2<<d2.isDaylightTime();
 
-    QDateTime zoneTime2=QDateTime(QDate::currentDate(),QTime::currentTime());
-    qDebug()<<zoneTime2.timeSpec();
+    qDebug()<<zoneTime.timeSpec();
+    qDebug()<<zoneTime<<zoneTime.isDaylightTime();
 
-    qDebug()<<zoneTime2.toLocalTime()<<zoneTime2.toLocalTime().isDaylightTime();
-    qDebug()<<zoneTime2.timeSpec();
+    qDebug()<<zoneTime.toLocalTime()<<zoneTime.toLocalTime().isDaylightTime();
+    qDebug()<<zoneTime.timeSpec();
 
-    qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
-    qDebug()<<zoneTime2.timeSpec();
+    qDebug()<<zoneTime<<zoneTime.isDaylightTime();
+    qDebug()<<zoneTime.timeSpec();
 
-    zoneTime2.setTimeSpec(Qt::UTC);
-    qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
-    qDebug()<<zoneTime2.timeSpec();
+    zoneTime.setTimeSpec(Qt::UTC);
+    qDebug()<<zoneTime<<zoneTime.isDaylightTime();
+    qDebug()<<zoneTime.timeSpec();
 
-    zoneTime2.setTimeSpec(Qt::TimeZone);
-    qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
-    qDebug()<<zoneTime2.timeSpec();
+    zoneTime.setTimeSpec(Qt::TimeZone);
+    qDebug()<<zoneTime<<zoneTime.isDaylightTime();
+    qDebug()<<zoneTime.timeSpec();
 
 }
 
