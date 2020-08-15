@@ -2,6 +2,8 @@
 #define BLANKPAGE_H
 
 #include <QWidget>
+#include <QPainter>
+#include <QPainterPath>
 
 namespace Ui {
 class BlankPage;
@@ -14,6 +16,9 @@ class BlankPage : public QWidget
 public:
     explicit BlankPage(QWidget *parent = nullptr);
     ~BlankPage();
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
 
 private slots:
     void on_NextPage_clicked();

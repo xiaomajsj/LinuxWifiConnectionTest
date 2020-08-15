@@ -30,21 +30,24 @@ void SettingWifi::InitialClock()
 
 //    timezoneList=QTimeZone::availableTimeZoneIds(QLocale::UnitedKingdom);
 //    timezoneList.append(QTimeZone::availableTimeZoneIds(QLocale::Germany));
-
-//    timezoneList.append(QTimeZone::availableTimeZoneIds(QLocale::China));
-//    timezoneList.append(QTimeZone::availableTimeZoneIds(QLocale::UnitedStates));
-//    timezoneList.append(QTimeZone::availableTimeZoneIds(QLocale::Australia));
 //    for(QByteArray &id : timezoneList)
 //     {
 //         ui->TimeZoneCombo->addItem(id);
 //     }
 
-    ui->TimeZoneCombo->addItem("Europe/Amsterdam");
-    ui->TimeZoneCombo->addItem("Europe/Berlin");
-    ui->TimeZoneCombo->addItem("Europe/London");
-    ui->TimeZoneCombo->addItem("Asia/Shanghai");
-    ui->TimeZoneCombo->addItem("America/New_York");
-    ui->TimeZoneCombo->addItem("Australia/Sydney");
+//    ui->TimeZoneCombo->addItem("Europe/Amsterdam");
+//    ui->TimeZoneCombo->addItem("Europe/Berlin");
+//    ui->TimeZoneCombo->addItem("Europe/London");
+//    ui->TimeZoneCombo->addItem("Asia/Shanghai");
+//    ui->TimeZoneCombo->addItem("America/New_York");
+//    ui->TimeZoneCombo->addItem("Australia/Sydney");
+        ui->TimeZoneCombo->addItem(CountryList[Country::UTC]);
+        ui->TimeZoneCombo->addItem(CountryList[Country::Netherlands]);
+        ui->TimeZoneCombo->addItem(CountryList[Country::Germany]);
+        ui->TimeZoneCombo->addItem(CountryList[Country::England]);
+        ui->TimeZoneCombo->addItem(CountryList[Country::China]);
+        ui->TimeZoneCombo->addItem(CountryList[Country::America]);
+        ui->TimeZoneCombo->addItem(CountryList[Country::Australia]);
     //ShowTime();
 }
 
@@ -178,11 +181,12 @@ void SettingWifi::ReadOutputData()
 
 void SettingWifi::ShowTime()
 {
-    zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone(Qt::UTC));
+    zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("UTC"));
     //zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("Europe/Berlin"));
+//   QByteArray id=ui->TimeZoneCombo->currentText().toLatin1();
+//   timezone=QTimeZone(id);
 
-    QByteArray id=ui->TimeZoneCombo->currentText().toLatin1();
-    timezone=QTimeZone(id);
+    GetTimeZone();
 
     timeNow=(zoneTime.toTimeZone(timezone)).time();
     QString text = timeNow.toString("hh:mm:ss");
@@ -192,7 +196,97 @@ void SettingWifi::ShowTime()
 
 
 }
+void SettingWifi::GetTimeZone()
+{
+    int id=ui->TimeZoneCombo->currentIndex();
+    QDateTime timeToSetDaylight =QDateTime(QDate::currentDate(),QTime::currentTime());
+    QString timezoneString;
+    QByteArray timezoneID;
+    if(timeToSetDaylight.isDaylightTime()){
+    switch(id){
+    case Country::UTC:
+        timezoneString="UTC";
+        timezoneID=timezoneString.toLatin1();
+        timezone=QTimeZone(timezoneID);
+        break;
+    case Country::China:
+        timezoneString="UTC+08:00";
+        timezoneID=timezoneString.toLatin1();
+        timezone=QTimeZone(timezoneID);
+        break;
+    case Country::America:
+        timezoneString="UTC-05:00";
+        timezoneID=timezoneString.toLatin1();
+        timezone=QTimeZone(timezoneID);
+        break;
+    case Country::England:
+        timezoneString="UTC+01:00";
+        timezoneID=timezoneString.toLatin1();
+        timezone=QTimeZone(timezoneID);
+        break;
+    case Country::Germany:
+        timezoneString="UTC+02:00";
+        timezoneID=timezoneString.toLatin1();
+        timezone=QTimeZone(timezoneID);
+        break;
+    case Country::Netherlands:
+        timezoneString="UTC+02:00";
+        timezoneID=timezoneString.toLatin1();
+        timezone=QTimeZone(timezoneID);
+        break;
+    case Country::Australia:
+        timezoneString="UTC+10:00";
+        timezoneID=timezoneString.toLatin1();
+        timezone=QTimeZone(timezoneID);
+        break;
+    default:
+        break;
+     }
+    }
+  else if((!timeToSetDaylight.isDaylightTime())){
+        switch(id){
+        case Country::UTC:
+            timezoneString="UTC";
+            timezoneID=timezoneString.toLatin1();
+            timezone=QTimeZone(timezoneID);
+            break;
+        case Country::China:
+            timezoneString="UTC+08:00";
+            timezoneID=timezoneString.toLatin1();
+            timezone=QTimeZone(timezoneID);
+            break;
+        case Country::America:
+            timezoneString="UTC-05:00";
+            timezoneID=timezoneString.toLatin1();
+            timezone=QTimeZone(timezoneID);
+            break;
+        case Country::England:
+            timezoneString="UTC+00:00";
+            timezoneID=timezoneString.toLatin1();
+            timezone=QTimeZone(timezoneID);
+            break;
+        case Country::Germany:
+            timezoneString="UTC+01:00";
+            timezoneID=timezoneString.toLatin1();
+            timezone=QTimeZone(timezoneID);
+            break;
+        case Country::Netherlands:
+            timezoneString="UTC+01:00";
+            timezoneID=timezoneString.toLatin1();
+            timezone=QTimeZone(timezoneID);
+            break;
+        case Country::Australia:
+            timezoneString="UTC+10:00";
+            timezoneID=timezoneString.toLatin1();
+            timezone=QTimeZone(timezoneID);
+            break;
+        default:
+            break;
 
+        }
+    }
+
+}
 
 void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
 {
@@ -204,6 +298,8 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
     qDebug()<<timezone<<":  "<<timeNow;
     QList<QByteArray> list =QTimeZone::availableTimeZoneIds();
     qDebug()<<list;
+    QDateTime zoneTime2=QDateTime(QDate::currentDate(),QTime::currentTime());
+    qDebug()<<zoneTime2.isDaylightTime();
 }
 
 
@@ -236,6 +332,16 @@ void SettingWifi::on_Test_clicked()
     }
     file.close();
 
+}
+
+void SettingWifi::paintEvent(QPaintEvent *e)
+{
+
+//    QPainter painter(this);
+//    QPen paintpen(Qt::green);
+//    paintpen.setWidth(20);
+//    painter.setPen(paintpen);
+//    painter.drawLine(0,0,100,100);
 }
 
 

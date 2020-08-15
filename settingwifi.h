@@ -16,6 +16,10 @@
 #include <QMessageBox>
 #include <QDir>
 
+#include <QPainter>
+#include <QtCore>
+#include <QtGui>
+
 #include "blankpage.h"
 
 //static const QString WifiSettingPath = "/etc/network/interfaces";
@@ -26,6 +30,27 @@ static const QString CommandList[]={
     "",
     "/home/root/PC-LCD/networkMode.sh simMode",
 };
+
+static const QString CountryList[]={
+ "UTC",
+ "Netherlands/Amsterdam",
+ "Germany/Berlin",
+ "United Kingdom/London",
+ "China/Peking",
+ "America/New York",
+ "Australis/Sydney",
+};
+
+enum Country{
+    UTC=0,
+    Netherlands,
+    Germany,
+    England,
+    China,
+    America,
+    Australia,
+};
+
 
 enum ListType{
     WifiSetting=0,
@@ -53,7 +78,10 @@ public:
 
     void ShowTime();
     void InitialClock();
+    void GetTimeZone();
 
+protected:
+    void paintEvent(QPaintEvent *e) override;
 private slots:
     void on_Connect_clicked();
 
