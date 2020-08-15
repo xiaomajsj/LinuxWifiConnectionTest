@@ -178,11 +178,11 @@ void SettingWifi::ReadOutputData()
 
 void SettingWifi::ShowTime()
 {
-    //zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone(Qt::UTC));
-    zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("Europe/Berlin"));
+    zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone(Qt::UTC));
+    //zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("Europe/Berlin"));
 
     QByteArray id=ui->TimeZoneCombo->currentText().toLatin1();
-    QTimeZone timezone=QTimeZone(id);
+    timezone=QTimeZone(id);
 
     timeNow=(zoneTime.toTimeZone(timezone)).time();
     QString text = timeNow.toString("hh:mm:ss");

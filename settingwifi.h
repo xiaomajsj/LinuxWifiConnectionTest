@@ -84,6 +84,7 @@ private:
     QMutex *mutex;
     QTimer *ClockTimer;
     QTime timeNow;
+    QTimeZone timezone;
     QDateTime zoneTime;
     QList<QByteArray> timezoneList;
     QProcess updateProcess;
