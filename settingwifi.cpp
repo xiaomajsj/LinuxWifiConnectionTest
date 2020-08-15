@@ -181,7 +181,7 @@ void SettingWifi::ReadOutputData()
 
 void SettingWifi::ShowTime()
 {
-    zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("UTC"));
+    zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime());
     //zoneTime=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("Europe/Berlin"));
 //   QByteArray id=ui->TimeZoneCombo->currentText().toLatin1();
 //   timezone=QTimeZone(id);
@@ -293,18 +293,27 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
 {
     ShowTime();
     ClockTimer->start();
-    QByteArray id=ui->TimeZoneCombo->currentText().toLatin1();
-    qDebug()<<ui->TimeZoneCombo->currentText();
-    qDebug()<<id;
-    qDebug()<<timezone<<":  "<<timeNow;
-    QList<QByteArray> list =QTimeZone::availableTimeZoneIds();
-    qDebug()<<list;
-    QDateTime zoneTime2=QDateTime(QDate::currentDate(),QTime::currentTime(),QTimeZone("UTC"));
+    const char* s = "2020-08-15T03:54:00";
+    QDateTime d = QDateTime::fromString(s, Qt::ISODate).toLocalTime();
+
+    qDebug()<<d<<d.isDaylightTime();
+
+    QDateTime zoneTime2=QDateTime(QDate::currentDate(),QTime::currentTime());
+    qDebug()<<zoneTime2.timeSpec();
+
+    qDebug()<<zoneTime2.toLocalTime()<<zoneTime2.toLocalTime().isDaylightTime();
+    qDebug()<<zoneTime2.timeSpec();
+
     qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
+    qDebug()<<zoneTime2.timeSpec();
+
     zoneTime2.setTimeSpec(Qt::UTC);
     qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
+    qDebug()<<zoneTime2.timeSpec();
+
     zoneTime2.setTimeSpec(Qt::TimeZone);
     qDebug()<<zoneTime2<<zoneTime2.isDaylightTime();
+    qDebug()<<zoneTime2.timeSpec();
 
 }
 
