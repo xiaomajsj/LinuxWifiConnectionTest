@@ -202,6 +202,8 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
     qDebug()<<ui->TimeZoneCombo->currentText();
     qDebug()<<id;
     qDebug()<<timezone<<":  "<<timeNow;
+    QList<QByteArray> list =QTimeZone::availableTimeZoneIds();
+    qDebug()<<list;
 }
 
 
