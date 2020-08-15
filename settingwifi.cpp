@@ -116,6 +116,10 @@ void SettingWifi::on_connect4G_clicked()
     qDebug()<<process.exitStatus();
 
 }
+void SettingWifi::on_BeginConnect_clicked()
+{
+    ConnectWifi();
+}
 
 void SettingWifi::on_Clean_clicked()
 {
@@ -131,7 +135,7 @@ void SettingWifi::on_Cancel_clicked()
 
 void SettingWifi::on_OK_clicked()
 {
-    if(ui->SSIDInput->text()==" " || ui->PasswordInput->text()==" ")
+    if(ui->SSIDInput->text()=="" || ui->PasswordInput->text()=="")
     {
         QMessageBox msgbox;
         msgbox.setText("please enter SSID and Password");
@@ -143,7 +147,6 @@ void SettingWifi::on_OK_clicked()
     ui->InputWidget->hide();
     //WriteSetting();
     SettingCommand();
-    ConnectWifi();
 }
 
 void SettingWifi::on_Update_clicked()
@@ -229,3 +232,5 @@ void SettingWifi::on_Test_clicked()
     file.close();
 
 }
+
+

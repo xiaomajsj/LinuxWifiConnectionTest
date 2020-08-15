@@ -128,20 +128,21 @@
      <rect>
       <x>20</x>
       <y>30</y>
-      <width>121</width>
+      <width>81</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Connect Wifi</string>
+     <string>Adding new 
+Connection</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Clean">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>200</x>
       <y>30</y>
-      <width>121</width>
+      <width>81</width>
       <height>41</height>
      </rect>
     </property>
@@ -245,6 +246,19 @@
     </property>
     <property name="text">
      <string>Test</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="BeginConnect">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>30</y>
+      <width>75</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Connect</string>
     </property>
    </widget>
   </widget>
