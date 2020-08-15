@@ -294,9 +294,10 @@ void SettingWifi::on_TimeZoneCombo_currentIndexChanged(int index)
     ShowTime();
     ClockTimer->start();
     const char* s = "2020-08-15T03:54:00";
-    QDateTime d = QDateTime::fromString(s, Qt::ISODate).toLocalTime();
-
-    qDebug()<<d<<d.isDaylightTime();
+    QDateTime d1 = QDateTime::fromString(s, Qt::ISODate);
+    qDebug()<<d1<<d1.isDaylightTime();
+    QDateTime d2 = QDateTime::fromString(s, Qt::ISODate).toLocalTime();
+    qDebug()<<d2<<d2.isDaylightTime();
 
     QDateTime zoneTime2=QDateTime(QDate::currentDate(),QTime::currentTime());
     qDebug()<<zoneTime2.timeSpec();
