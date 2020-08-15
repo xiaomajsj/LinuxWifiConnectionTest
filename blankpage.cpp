@@ -29,5 +29,5 @@ void BlankPage::paintEvent(QPaintEvent *e)
     painter.setRenderHint(QPainter::SmoothPixmapTransform,true);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
     //painter.drawRoundedRect(_keyboard->rect(),20,20);
-    painter.fillPath(path,QBrush(Qt::white));
+    painter.fillPath(path,QBrush(Qt::black));
 }
