@@ -160,13 +160,18 @@ connect (&updateProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(ReadOutpu
 //process initialize
 updateProcess.setWorkingDirectory("/home/root/PC-LCD");
 updateProcess.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+QStringList enviroment =QProcess::systemEnvironment();
+qDebug()<<enviroment;
 QString updateCommandWithEnv="\"source "+updateCommand+"\"";
-updateProcess.start("bash",QStringList()<<"-c"<<updateCommandWithEnv);
+//updateProcess.start("bash",QStringList()<<"-c"<<updateCommandWithEnv);
+updateProcess.start(updateCommand);
 qDebug()<<updateCommandWithEnv;
 
 //start
 updateProcess.waitForStarted();
 qDebug("Updating start");
+qDebug()<<updateProcess.error();
+qDebug()<<updateProcess.errorString();
 //system(updateCommand.toLocal8Bit());
 msgboxUpdate.setText("Updating start, please wait");
 msgboxUpdate.exec();
@@ -174,6 +179,8 @@ msgboxUpdate.exec();
 //finished
 updateProcess.waitForFinished();
 qDebug("Updating ended");
+qDebug()<<updateProcess.error();
+qDebug()<<updateProcess.errorString();
 }
 
 void SettingWifi::ReadOutputData()
