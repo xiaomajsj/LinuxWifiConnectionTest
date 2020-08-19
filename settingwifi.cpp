@@ -156,22 +156,56 @@ void SettingWifi::on_Update_clicked()
 {
 QString updateCommand=CommandList[ListType::Update];
 connect (&updateProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(ReadOutputData()));
-updateProcess.start(updateCommand);
+
+//process initialize
+updateProcess.setWorkingDirectory("/home/root/PC-LCD");
+updateProcess.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+QString updateCommandWithEnv="\"source "+updateCommand+"\"";
+updateProcess.start("bash",QStringList()<<"-c"<<updateCommandWithEnv);
+qDebug()<<updateCommandWithEnv;
+
+//start
+updateProcess.waitForStarted();
+qDebug("Updating start");
+//system(updateCommand.toLocal8Bit());
+msgboxUpdate.setText("Updating start, please wait");
+msgboxUpdate.exec();
+
+//finished
 updateProcess.waitForFinished();
+qDebug("Updating ended");
 }
 
 void SettingWifi::ReadOutputData()
 {
     QTextStream StdoutStream(updateProcess.readAllStandardOutput());
     QString line;
+    QMessageBox msgbox;
 
     do {
         line = StdoutStream.readLine();
         qDebug()<<line;
-        if ( line.contains("completed"))
+        if ( line.contains("updated"))
         {
-            QMessageBox msgbox;
+            msgbox.done(QDialog::Accepted);
             msgbox.setText("updating completed, please restart the software");
+            msgbox.exec();
+        }
+        else if ( line.contains("no new version found"))
+        {
+            msgbox.done(QDialog::Accepted);
+            msgbox.setText("no new version found, the software is the newest version");
+            msgbox.exec();
+        }
+        else if (line.contains("no network"))
+        {
+            msgbox.setText("No network, please check the network connection");
+            msgbox.exec();
+            break;
+        }
+        else if (line.contains("connected"))
+        {
+            msgbox.setText("Network connection successfully, the updating start");
             msgbox.exec();
         }
 

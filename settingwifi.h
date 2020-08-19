@@ -27,7 +27,7 @@ static const QString CommandList[]={
     "e:/QT Project/LinuxWifiSetting/TestFile.txt",
     "/home/root/PC-LCD/networkMode.sh wifiMode",
     "",
-    "",
+    "/home/root/PC-LCD/LocalUpdate.sh",
     "/home/root/PC-LCD/networkMode.sh simMode",
 };
 
@@ -116,6 +116,8 @@ private:
     QDateTime zoneTime;
     QList<QByteArray> timezoneList;
     QProcess updateProcess;
+
+    QMessageBox msgboxUpdate;
 
     BlankPage *_blankpage;
 
