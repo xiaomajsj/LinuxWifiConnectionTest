@@ -158,7 +158,7 @@ void SettingWifi::on_Update_clicked()
 {
 QString updateCommand=CommandList[ListType::Update];
 connect (&updateProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(ReadOutputData()));
-connect (&updateProcess,SIGNAL(finished()),this,SLOT(UpdateFinished()));
+connect (&updateProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(UpdateFinished(int, QProcess::ExitStatus)));
 
 //connect(&updateProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
 //    [=](int exitCode, QProcess::ExitStatus exitStatus)
@@ -195,14 +195,15 @@ msgboxUpdate.exec();
 }
 
 
-void SettingWifi::UpdateFinished()
+void SettingWifi::UpdateFinished(int code, QProcess::ExitStatus status)
 {
         qDebug("Updating ended");
         qDebug()<<updateProcess.error();
         qDebug()<<updateProcess.errorString();
 
-        msgboxUpdate.setText("Updating ended");
-        msgboxUpdate.exec();
+        qDebug()<<"Process return code is "<<code;
+
+        qDebug()<<"Process return status is "<<status;
 
         ui->UpdateLabel->setText(updateResult);
 }
@@ -230,6 +231,10 @@ void SettingWifi::ReadOutputData()
             msgboxUpdate.done(QDialog::Accepted);
             msgboxUpdate.setText("no new version found, the current software is the newest version");
             msgboxUpdate.exec();
+
+            ui->UpdateLabel->setStyleSheet("QLabel{background-color:green;}");
+            updateResult="finished!";
+
         }
         else if (line.contains("no network"))
         {

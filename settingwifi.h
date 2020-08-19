@@ -105,7 +105,7 @@ private slots:
 
     void on_BeginConnect_clicked();
 
-    void UpdateFinished();
+    void UpdateFinished(int code, QProcess::ExitStatus status);
 
 private:
     Ui::SettingWifi *ui;
