@@ -157,31 +157,39 @@ void SettingWifi::on_Update_clicked()
 QString updateCommand=CommandList[ListType::Update];
 connect (&updateProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(ReadOutputData()));
 
+connect(&updateProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+    [=](int exitCode, QProcess::ExitStatus exitStatus)
+{
+    qDebug("Updating ended");
+    qDebug()<<updateProcess.error();
+    qDebug()<<updateProcess.errorString();
+
+    QString exitStat="Updating finished, exiting code is: ";
+    exitStat.append(exitCode);
+    exitStat.append(". Exiting status is: ");
+    exitStat.append(exitStatus);
+
+    msgboxUpdate.setText(exitStat);
+    msgboxUpdate.exec();
+}
+);
+
 //process initialize
 updateProcess.setWorkingDirectory("/home/root/PC-LCD");
 updateProcess.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
 QStringList enviroment =QProcess::systemEnvironment();
 qDebug()<<enviroment;
-QString updateCommandWithEnv="\"source "+updateCommand+"\"";
-//updateProcess.start("bash",QStringList()<<"-c"<<updateCommandWithEnv);
 updateProcess.start(updateCommand);
-qDebug()<<updateCommandWithEnv;
 
 //start
 updateProcess.waitForStarted();
 qDebug("Updating start");
 qDebug()<<updateProcess.error();
 qDebug()<<updateProcess.errorString();
-//system(updateCommand.toLocal8Bit());
 msgboxUpdate.setText("Updating start, please wait");
 msgboxUpdate.exec();
-
-//finished
-updateProcess.waitForFinished();
-qDebug("Updating ended");
-qDebug()<<updateProcess.error();
-qDebug()<<updateProcess.errorString();
 }
+
 
 void SettingWifi::ReadOutputData()
 {
@@ -191,7 +199,6 @@ void SettingWifi::ReadOutputData()
 
     do {
         line = StdoutStream.readLine();
-        qDebug()<<line;
         if ( line.contains("updated"))
         {
             msgbox.done(QDialog::Accepted);
@@ -201,7 +208,7 @@ void SettingWifi::ReadOutputData()
         else if ( line.contains("no new version found"))
         {
             msgbox.done(QDialog::Accepted);
-            msgbox.setText("no new version found, the software is the newest version");
+            msgbox.setText("no new version found, the current software is the newest version");
             msgbox.exec();
         }
         else if (line.contains("no network"))
