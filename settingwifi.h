@@ -105,6 +105,8 @@ private slots:
 
     void on_BeginConnect_clicked();
 
+    void UpdateFinished();
+
 private:
     Ui::SettingWifi *ui;
     QString _ssid;
