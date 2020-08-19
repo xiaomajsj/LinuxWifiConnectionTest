@@ -117,7 +117,9 @@ private:
     QTimeZone timezone;
     QDateTime zoneTime;
     QList<QByteArray> timezoneList;
+
     QProcess updateProcess;
+    QString updateResult;
 
     QMessageBox msgboxUpdate;
 

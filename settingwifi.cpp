@@ -10,6 +10,8 @@ SettingWifi::SettingWifi(QWidget *parent)
     mutex=new QMutex;
     InitialClock();
 
+    ui->UpdateLabel->setStyleSheet("QLabel{background-color:white;}");
+
     _blankpage= new BlankPage;
 
 }
@@ -156,7 +158,7 @@ void SettingWifi::on_Update_clicked()
 {
 QString updateCommand=CommandList[ListType::Update];
 connect (&updateProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(ReadOutputData()));
-connect (&updateProcess,SIGNAL(QProcess::finished),this,SLOT(UpdateFinished()));
+connect (&updateProcess,SIGNAL(finished()),this,SLOT(UpdateFinished()));
 
 //connect(&updateProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
 //    [=](int exitCode, QProcess::ExitStatus exitStatus)
@@ -179,11 +181,12 @@ connect (&updateProcess,SIGNAL(QProcess::finished),this,SLOT(UpdateFinished()));
 updateProcess.setWorkingDirectory("/home/root/PC-LCD");
 updateProcess.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
 QStringList enviroment =QProcess::systemEnvironment();
-qDebug()<<enviroment;
 updateProcess.start(updateCommand);
 
 //start
 updateProcess.waitForStarted();
+ui->UpdateLabel->setStyleSheet("QLabel{background-color:red;}");
+ui->UpdateLabel->setText("updating, please wait");
 qDebug("Updating start");
 qDebug()<<updateProcess.error();
 qDebug()<<updateProcess.errorString();
@@ -200,37 +203,49 @@ void SettingWifi::UpdateFinished()
 
         msgboxUpdate.setText("Updating ended");
         msgboxUpdate.exec();
+
+        ui->UpdateLabel->setText(updateResult);
 }
 void SettingWifi::ReadOutputData()
 {
     QTextStream StdoutStream(updateProcess.readAllStandardOutput());
     QString line;
-    QMessageBox msgbox;
 
     do {
         line = StdoutStream.readLine();
         if ( line.contains("updated"))
         {
-            msgbox.done(QDialog::Accepted);
-            msgbox.setText("updating completed, please restart the software");
-            msgbox.exec();
+            qDebug()<<line;
+            msgboxUpdate.done(QDialog::Accepted);
+
+            updateResult="finished!";
+            ui->UpdateLabel->setStyleSheet("QLabel{background-color:green;}");
+
+            msgboxUpdate.setText("updating completed, please restart the software");
+            msgboxUpdate.exec();
         }
         else if ( line.contains("no new version found"))
         {
-            msgbox.done(QDialog::Accepted);
-            msgbox.setText("no new version found, the current software is the newest version");
-            msgbox.exec();
+            qDebug()<<line;
+            msgboxUpdate.done(QDialog::Accepted);
+            msgboxUpdate.setText("no new version found, the current software is the newest version");
+            msgboxUpdate.exec();
         }
         else if (line.contains("no network"))
         {
-            msgbox.setText("No network, please check the network connection");
-            msgbox.exec();
+            qDebug()<<line;
+            msgboxUpdate.setText("No network, please check the network connection");
+            msgboxUpdate.exec();
+
+            updateResult="no network";
+            ui->UpdateLabel->setStyleSheet("QLabel{background-color:red;}");
+            ui->UpdateLabel->setText(updateResult);
             break;
         }
         else if (line.contains("connected"))
         {
-            msgbox.setText("Network connection successfully, the updating start");
-            msgbox.exec();
+            qDebug()<<line;
+            qDebug("Network connection successfully, the updating start");
         }
 
     } while (!line.isNull());
