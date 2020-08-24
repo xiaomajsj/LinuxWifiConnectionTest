@@ -10,6 +10,16 @@ SettingWifi::SettingWifi(QWidget *parent)
     mutex=new QMutex;
     InitialClock();
 
+    ReadNetworkLog();
+    if(_currentMode=="Wifi"){ui->wifiButton->setChecked(true);
+    ConnectWifi();
+    }
+    else if(_currentMode=="SIM_Card"){ui->SIMButton->setChecked(true);
+    ConnectSIMCard();
+    }
+
+
+    GetAllSSID();
     ui->UpdateLabel->setStyleSheet("QLabel{background-color:white;}");
 
     _blankpage= new BlankPage;
@@ -54,6 +64,125 @@ void SettingWifi::InitialClock()
 }
 
 
+void SettingWifi::GetAllSSID()
+{
+
+SSIDList.clear();
+SSIDItem.clear();
+
+QDir SSIDDocPath("E:/QT Project/build-LinuxWifiSetting-Desktop_Qt_5_14_0_MinGW_64_bit-Debug/bin/LOG");
+QFile SSIDDoc(SSIDDocPath.filePath("TestSSID.txt"));
+if(!SSIDDoc.open(QIODevice::ReadWrite | QIODevice::Text))
+{qDebug("fail to open");
+    msgboxUpdate.setText("failed to open SSID Setting file");
+    msgboxUpdate.exec();
+    return;
+}
+QTextStream in(&SSIDDoc);
+QString allText=in.readAll();
+in.seek(0);
+QString line;
+QString key;
+QString value;
+QString _SSID;
+QString _password;
+
+//parsing each line and get all SSIDs
+do
+{
+    line=in.readLine();
+    line.replace(QString("="),QString(" "));
+    line.replace(QString("\""),QString(""));
+    line.replace(QString(":"),QString(" "));
+    QTextStream linestream(&line);
+    linestream>>key>>value;
+    qDebug()<<line;
+    if(key=="network")
+    {
+      currentSSID._inputting=true;
+      qDebug()<<currentSSID._inputting;
+    }
+    if(key=="ssid")
+    {
+       if(currentSSID._inputting)
+       {currentSSID.SetSSID(value);
+        currentSSID._hasSSID=true;
+       }
+    }
+    if(key=="#psk")
+    {
+       if(currentSSID._inputting)
+       {currentSSID.SetPassword(value);
+        currentSSID._haspassword=true;
+       }
+    }
+    if(key=="psk")
+    {
+        if(currentSSID._inputting)
+        {currentSSID.SetPSK(value);
+         currentSSID._hasPSK=true;
+        }
+    }
+    if(key=="}")
+    {
+       if(currentSSID._inputting)
+       {
+           SSIDList.append(currentSSID);
+           currentSSID.Clear();
+       }
+    }
+}while(!line.isNull());
+
+SSIDDoc.close();
+
+//add all ssid to the list
+    for(auto &a : SSIDList)
+    {
+    QListWidgetItem item(a.getSSID());
+    SSIDItem.append(item);
+    }
+    for (auto &a : SSIDItem)
+    {
+     a.setSizeHint(QSize(20,20));
+     ui->SSIDList->addItem(&a);
+    }
+
+}
+
+void SettingWifi::on_SSIDList_itemClicked(QListWidgetItem *item)
+{
+int index=ui->SSIDList->currentRow();
+QStringList content;
+content<<"SSID:"<<SSIDList[index].getSSID()<<"\n"<<"Password:"<<SSIDList[index].getPassword()<<"\n"<<"PSK:"<<SSIDList[index].getPSK();
+ui->SSIDContent->setText(content.join(""));
+}
+
+
+void SettingWifi::on_DeleteSSID_clicked()
+{
+QModelIndex index=ui->SSIDList->currentIndex();
+if(index.isValid())
+    {
+        int index=ui->SSIDList->currentRow();
+        QString ssidHint=SSIDList[index].getSSID();
+        ui->TestBox->setText(GetWPAFormat(SSIDList[index]));
+    }
+else{
+        qDebug()<<"please selected a valid object!";
+        msgboxUpdate.setText("failed to open setting file");
+        msgboxUpdate.exec();
+        return;
+    }
+}
+
+QString SettingWifi::GetWPAFormat(SSID ssid)
+{
+QStringList content;
+content<<"network={\n\t"<<"ssid=\""<<ssid.getSSID()<<"\"\n\t"<<"#psk=\""<<ssid.getPassword()<<"\"\n\t"
+      <<"psk="<<ssid.getPSK()<<"\n}";
+return content.join("");
+}
+
 
 void SettingWifi::WriteSetting()
 {
@@ -93,32 +222,41 @@ void SettingWifi::ConnectWifi()
 QString command=CommandList[ListType::BeginConnect];
 QProcess process;
 QMutexLocker mutexLocker(mutex);
+process.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
 process.start(command);
 process.waitForFinished();
 qDebug("connect WIFI successfully");
-qDebug()<<process.error();
-qDebug()<<process.exitStatus();
+qDebug()<<"ConnectWIFI error Code: "<<process.error();
+qDebug()<<"ConnectWIFI exit Status: "<<process.exitStatus();
 
-system(command.toLocal8Bit());
-qDebug("System code start");
+//system(command.toLocal8Bit());
+//qDebug("System code start");
 }
 
-void SettingWifi::on_Connect_clicked()
+
+void SettingWifi::ConnectSIMCard()
+{
+    QString command=CommandList[ListType::FourGConnect];
+    QProcess process;
+    QMutexLocker mutexLocker(mutex);
+    process.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+    process.start(command);
+    process.waitForFinished();
+    qDebug("connect 4G successfully");
+    qDebug()<<"Connect Sim Card error Code: "<<process.error();
+    qDebug()<<"Connect Sim Card exit Status: "<<process.exitStatus();
+
+}
+
+void SettingWifi::on_AddSSID_clicked()
 {
     ui->InputWidget->show();
     ui->SSIDInput->setText("");
     ui->PasswordInput->setText("");
 }
-void SettingWifi::on_connect4G_clicked()
+void SettingWifi::on_connectSIM_clicked()
 {
-    QString command=CommandList[ListType::FourGConnect];
-    QProcess process;
-    QMutexLocker mutexLocker(mutex);
-    process.start(command);
-    process.waitForFinished();
-    qDebug("connect 4G successfully");
-    qDebug()<<process.error();
-    qDebug()<<process.exitStatus();
+   ConnectSIMCard();
 
 }
 void SettingWifi::on_BeginConnect_clicked()
@@ -152,6 +290,7 @@ void SettingWifi::on_OK_clicked()
     ui->InputWidget->hide();
     //WriteSetting();
     SettingCommand();
+    GetAllSSID();
 }
 
 void SettingWifi::on_Update_clicked()
@@ -160,6 +299,7 @@ QString updateCommand=CommandList[ListType::Update];
 connect (&updateProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(ReadOutputData()));
 connect (&updateProcess,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(UpdateFinished(int, QProcess::ExitStatus)));
 
+//lambda function
 //connect(&updateProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
 //    [=](int exitCode, QProcess::ExitStatus exitStatus)
 //{
@@ -207,6 +347,8 @@ void SettingWifi::UpdateFinished(int code, QProcess::ExitStatus status)
 
         ui->UpdateLabel->setText(updateResult);
 }
+
+
 void SettingWifi::ReadOutputData()
 {
     QTextStream StdoutStream(updateProcess.readAllStandardOutput());
@@ -280,6 +422,7 @@ void SettingWifi::GetTimeZone()
     QString timezoneString;
     QByteArray timezoneID;
     if(true){
+    //if(zoneTime.isDaylightTime()){
     switch(id){
     case Country::UTC:
         timezoneString="UTC";
@@ -434,6 +577,112 @@ void SettingWifi::paintEvent(QPaintEvent *e)
 //    paintpen.setWidth(20);
 //    painter.setPen(paintpen);
 //    painter.drawLine(0,0,100,100);
+}
+
+
+
+void SettingWifi::on_wifiButton_toggled(bool checked)
+{
+   if(checked==true)
+   {
+     _networkMode="Wifi";
+     ReadNetworkLog();
+     if(_networkMode==_currentMode){return;}
+     else{
+         _currentMode=_networkMode;
+         RewriteNetworkLog();}
+   }
+   else
+   {
+     return;
+   }
+}
+
+void SettingWifi::on_SIMButton_toggled(bool checked)
+{
+    if(checked==true)
+    {
+      _networkMode="SIM_Card";
+      ReadNetworkLog();
+      if(_networkMode==_currentMode){return;}
+      else{
+          _currentMode=_networkMode;
+          RewriteNetworkLog();}
+    }
+    else
+    {
+      return;
+    }
+}
+
+void SettingWifi::ReadNetworkLog()
+{
+    QDir dir;
+    if(!dir.exists("LOG/"))
+    {dir.mkpath("LOG/");}
+    if(!dir.mkpath("LOG/"))
+      return;
+    QString fileName;
+    fileName="NetworkMode.txt";
+
+    QMutexLocker locker(mutex);
+    QFile file("LOG/"+fileName);
+    if(!file.open(QIODevice::ReadWrite | QIODevice::Text))
+    {qDebug("failed to open");
+        msgboxUpdate.setText("failed to open setting file");
+        msgboxUpdate.exec();
+        return;}
+
+    QString line;
+    QTextStream in(&file);
+    QString allText=in.readAll();
+    in.seek(0);
+
+
+    if(allText=="")
+    {
+      file.close();
+      _currentMode="Wifi";
+      RewriteNetworkLog();
+      return;
+    }
+
+
+    do
+     {
+        line=in.readLine();
+        QTextStream linestream(&line);
+        QString key;
+        QString Mode;
+        linestream>>key>>Mode;
+
+        if(key=="NetworkMode:"){_currentMode=Mode;}
+
+     } while(!line.isNull());
+
+
+
+    file.close();
+
+}
+
+void SettingWifi::RewriteNetworkLog()
+{
+
+    QString fileName;
+    fileName="NetworkMode.txt";
+    QFile file("LOG/"+fileName);
+    if(!file.open(QIODevice::ReadWrite | QIODevice::Text))
+    {qDebug("fail to open");
+        msgboxUpdate.setText("failed to open setting file");
+        msgboxUpdate.exec();
+        return;
+    }
+    file.resize(0);
+    QMutexLocker inputLocker(mutex);
+    QTextStream out(&file);
+    out<<"NetworkMode: "<<_currentMode;
+    file.close();
 }
 
 

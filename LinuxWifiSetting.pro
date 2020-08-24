@@ -22,11 +22,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     blankpage.cpp \
     main.cpp \
-    settingwifi.cpp
+    settingwifi.cpp \
+    ssid.cpp
 
 HEADERS += \
     blankpage.h \
-    settingwifi.h
+    settingwifi.h \
+    ssid.h
 
 FORMS += \
     blankpage.ui \
@@ -36,3 +38,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    Res.qrc

@@ -7,6 +7,9 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QTextStream>
+#include <QListWidgetItem>
+#include <QListWidget>
+#include <QStringList>
 #include <QDebug>
 #include <QTime>
 #include <QDateTime>
@@ -21,6 +24,7 @@
 #include <QtGui>
 
 #include "blankpage.h"
+#include "ssid.h"
 
 //static const QString WifiSettingPath = "/etc/network/interfaces";
 static const QString CommandList[]={
@@ -72,18 +76,27 @@ public:
     SettingWifi(QWidget *parent = nullptr);
     ~SettingWifi();
 
+    void GetAllSSID();
+    QString GetWPAFormat(SSID ssid);
+
     void WriteSetting();
     void ConnectWifi();
+    void ConnectSIMCard();
     void SettingCommand();
+
+
+    void RewriteNetworkLog();
+    void ReadNetworkLog();
 
     void ShowTime();
     void InitialClock();
     void GetTimeZone();
 
+
 protected:
     void paintEvent(QPaintEvent *e) override;
 private slots:
-    void on_Connect_clicked();
+    void on_AddSSID_clicked();
 
     void on_Clean_clicked();
 
@@ -99,7 +112,7 @@ private slots:
 
     void on_LastPage_clicked();
 
-    void on_connect4G_clicked();
+    void on_connectSIM_clicked();
 
     void on_Test_clicked();
 
@@ -107,11 +120,27 @@ private slots:
 
     void UpdateFinished(int code, QProcess::ExitStatus status);
 
+    void on_wifiButton_toggled(bool checked);
+
+    void on_SIMButton_toggled(bool checked);
+
+    void on_SSIDList_itemClicked(QListWidgetItem *item);
+
+    void on_DeleteSSID_clicked();
+
 private:
     Ui::SettingWifi *ui;
+
+    SSID currentSSID;
+    QList<SSID> SSIDList;
+    QList<QListWidgetItem> SSIDItem;
     QString _ssid;
     QString _password;
+    QString _networkMode;
+    QString _currentMode;
+
     QMutex *mutex;
+
     QTimer *ClockTimer;
     QTime timeNow;
     QTimeZone timezone;
@@ -125,5 +154,8 @@ private:
 
     BlankPage *_blankpage;
 
+
 };
+
+
 #endif // SETTINGWIFI_H
