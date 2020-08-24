@@ -35,6 +35,12 @@ static const QString CommandList[]={
     "/home/root/PC-LCD/networkMode.sh simMode",
 };
 
+static const QString filePath[]={
+"E:/QT Project/build-LinuxWifiSetting-Desktop_Qt_5_14_0_MinGW_64_bit-Debug/bin/LOG"
+
+};
+
+
 static const QString CountryList[]={
  "UTC",
  "Netherlands/Amsterdam",
@@ -77,7 +83,11 @@ public:
     ~SettingWifi();
 
     void GetAllSSID();
+    void BeginDeleteSSID();
+    void DeleteAllSSID();
     QString GetWPAFormat(SSID ssid);
+    void WriteWPA(QString content);
+    void GetSSIDItemFromList(QList<SSID> list);
 
     void WriteSetting();
     void ConnectWifi();
@@ -127,6 +137,10 @@ private slots:
     void on_SSIDList_itemClicked(QListWidgetItem *item);
 
     void on_DeleteSSID_clicked();
+
+    //void on_SSIDList_itemSelectionChanged();
+
+    void on_SaveSSID_clicked();
 
 private:
     Ui::SettingWifi *ui;

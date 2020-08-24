@@ -242,28 +242,29 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>15</x>
        <y>250</y>
-       <width>61</width>
+       <width>41</width>
        <height>41</height>
       </rect>
      </property>
      <property name="text">
-      <string>Add new 
+      <string>Add 
 SSID</string>
      </property>
     </widget>
     <widget class="QPushButton" name="Clean">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>175</x>
        <y>250</y>
-       <width>61</width>
+       <width>41</width>
        <height>41</height>
       </rect>
      </property>
      <property name="text">
-      <string>Delele All</string>
+      <string>Delele
+All</string>
      </property>
     </widget>
     <widget class="QListWidget" name="SSIDList">
@@ -311,14 +312,14 @@ SSID</string>
     <widget class="QPushButton" name="DeleteSSID">
      <property name="geometry">
       <rect>
-       <x>85</x>
+       <x>70</x>
        <y>250</y>
-       <width>61</width>
+       <width>41</width>
        <height>41</height>
       </rect>
      </property>
      <property name="text">
-      <string>Delete this
+      <string>Delete
  SSID</string>
      </property>
     </widget>
@@ -332,7 +333,20 @@ SSID</string>
       </rect>
      </property>
      <property name="readOnly">
-      <bool>true</bool>
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="SaveSSID">
+     <property name="geometry">
+      <rect>
+       <x>125</x>
+       <y>250</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Save</string>
      </property>
     </widget>
    </widget>
@@ -604,7 +618,7 @@ APN</string>
       <x>510</x>
       <y>300</y>
       <width>291</width>
-      <height>131</height>
+      <height>141</height>
      </rect>
     </property>
    </widget>

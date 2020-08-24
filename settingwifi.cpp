@@ -70,7 +70,7 @@ void SettingWifi::GetAllSSID()
 SSIDList.clear();
 SSIDItem.clear();
 
-QDir SSIDDocPath("E:/QT Project/build-LinuxWifiSetting-Desktop_Qt_5_14_0_MinGW_64_bit-Debug/bin/LOG");
+QDir SSIDDocPath(filePath[0]);
 QFile SSIDDoc(SSIDDocPath.filePath("TestSSID.txt"));
 if(!SSIDDoc.open(QIODevice::ReadWrite | QIODevice::Text))
 {qDebug("fail to open");
@@ -149,38 +149,168 @@ SSIDDoc.close();
 
 }
 
+void SettingWifi::GetSSIDItemFromList(QList<SSID> list)
+{
+    SSIDItem.clear();
+    for(auto &a : list)
+    {
+    QListWidgetItem item(a.getSSID());
+    SSIDItem.append(item);
+    }
+    for (auto &a : SSIDItem)
+    {
+     a.setSizeHint(QSize(20,20));
+     ui->SSIDList->addItem(&a);
+    }
+}
+
 void SettingWifi::on_SSIDList_itemClicked(QListWidgetItem *item)
 {
 int index=ui->SSIDList->currentRow();
 QStringList content;
-content<<"SSID:"<<SSIDList[index].getSSID()<<"\n"<<"Password:"<<SSIDList[index].getPassword()<<"\n"<<"PSK:"<<SSIDList[index].getPSK();
+content<<"SSID: "<<SSIDList[index].getSSID()<<"\n"<<"Password: "<<SSIDList[index].getPassword()<<"\n"<<"PSK: "<<SSIDList[index].getPSK();
 ui->SSIDContent->setText(content.join(""));
 }
 
-
 void SettingWifi::on_DeleteSSID_clicked()
 {
-QModelIndex index=ui->SSIDList->currentIndex();
-if(index.isValid())
-    {
-        int index=ui->SSIDList->currentRow();
-        QString ssidHint=SSIDList[index].getSSID();
-        ui->TestBox->setText(GetWPAFormat(SSIDList[index]));
-    }
-else{
-        qDebug()<<"please selected a valid object!";
-        msgboxUpdate.setText("failed to open setting file");
-        msgboxUpdate.exec();
-        return;
-    }
+
+    msgboxUpdate.setText("Are you sure to delete this SSID?");
+    msgboxUpdate.setStandardButtons(QMessageBox::Yes);
+    msgboxUpdate.addButton(QMessageBox::No);
+    msgboxUpdate.setDefaultButton(QMessageBox::No);
+    if (msgboxUpdate.exec()==QMessageBox::Yes){BeginDeleteSSID();}
+    else {return;}
+
+}
+
+void SettingWifi::BeginDeleteSSID()
+{
+    QModelIndex index=ui->SSIDList->currentIndex();
+    if(index.isValid())
+        {
+            QString AllWPA;
+            int index=ui->SSIDList->currentRow();
+            QString deletedPart=GetWPAFormat(SSIDList[index]);
+            ui->TestBox->setText(deletedPart);
+
+            if((index+1)<=SSIDList.size()){SSIDList.removeAt(index);}
+            else{qDebug("selected SSID dont exist!");
+                msgboxUpdate.setText("selected SSID dont exist!");
+                msgboxUpdate.exec();}
+
+            for(auto &a : SSIDList)
+            {
+                AllWPA+=GetWPAFormat(a);
+
+            }
+            //*****here insert the function to write the file WPA to remove SSID*****//
+            WriteWPA(AllWPA);
+            ui->TestBox2->setText(AllWPA);
+             //**********///
+            GetAllSSID();
+        }
+    else{
+            qDebug()<<"please selected a valid object!";
+            msgboxUpdate.setText("please selected a valid object!");
+            msgboxUpdate.exec();
+            return;
+        }
 }
 
 QString SettingWifi::GetWPAFormat(SSID ssid)
 {
 QStringList content;
 content<<"network={\n\t"<<"ssid=\""<<ssid.getSSID()<<"\"\n\t"<<"#psk=\""<<ssid.getPassword()<<"\"\n\t"
-      <<"psk="<<ssid.getPSK()<<"\n}";
+      <<"psk="<<ssid.getPSK()<<"\n}\n";
 return content.join("");
+}
+
+
+void SettingWifi::WriteWPA(QString content)
+{
+
+    QDir SSIDDocPath(filePath[0]);
+    QFile SSIDDoc(SSIDDocPath.filePath("TestSSID.txt"));
+    if(!SSIDDoc.open(QIODevice::ReadWrite | QIODevice::Text))
+    {qDebug("fail to open");
+        msgboxUpdate.setText("failed to open SSID Setting file");
+        msgboxUpdate.exec();
+        return;
+    }
+    QMutexLocker WPALocker(mutex);
+    SSIDDoc.resize(0);
+    QTextStream out(&SSIDDoc);
+    out<<content;
+    SSIDDoc.close();
+}
+
+void SettingWifi::on_Clean_clicked()
+{
+    msgboxUpdate.setText("Are you sure to delete all the SSID?");
+    msgboxUpdate.setStandardButtons(QMessageBox::Yes);
+    msgboxUpdate.addButton(QMessageBox::No);
+    msgboxUpdate.setDefaultButton(QMessageBox::No);
+    if (msgboxUpdate.exec()==QMessageBox::Yes){DeleteAllSSID();}
+    else {return;}
+}
+void SettingWifi::DeleteAllSSID()
+{
+    QDir SSIDDocPath(filePath[0]);
+    QFile SSIDDoc(SSIDDocPath.filePath("TestSSID.txt"));
+    if(!SSIDDoc.open(QIODevice::ReadWrite | QIODevice::Text))
+    {qDebug("fail to open");
+        msgboxUpdate.setText("failed to open SSID Setting file");
+        msgboxUpdate.exec();
+        return;
+    }
+    QMutexLocker WPALocker(mutex);
+    SSIDDoc.resize(0);
+    SSIDDoc.close();
+
+    GetAllSSID();
+}
+void SettingWifi::on_SaveSSID_clicked()
+{
+    QString content=ui->SSIDContent->toPlainText();
+    int SelectedRow=ui->SSIDList->currentRow();
+    QTextStream contentStream(&content);
+    QString line;
+    QString newSSID;
+    QString newPassword;
+    QString newPSK;
+    QString key;
+    QString value;
+
+    do{
+    line=contentStream.readLine();
+    QTextStream linestream(&line);
+    linestream>>key>>value;
+    if(key=="SSID:"){newSSID=value;}
+    if(key=="Password:"){newPassword=value;}
+    if(key=="PSK:"){newPSK=value;}
+
+    }while(!line.isNull());
+
+    //return if formatting is not correct
+    if(newSSID=="" || newPassword=="" || newPSK==""){qDebug("incorrect format. Please check the contents");
+    return;}
+
+    //operating SSIDList
+    SSIDList.removeAt(SelectedRow);
+    SSID newItem(newSSID,newPassword,newPSK);
+    SSIDList.insert(SelectedRow,newItem);
+
+    //write new SSID information to setting file
+    QString AllWPA;
+    for(auto &a : SSIDList)
+    {
+        AllWPA+=GetWPAFormat(a);
+    }
+    WriteWPA(AllWPA);
+    ui->TestBox2->setText(AllWPA);
+    GetSSIDItemFromList(SSIDList);
+
 }
 
 
@@ -264,12 +394,6 @@ void SettingWifi::on_BeginConnect_clicked()
     ConnectWifi();
 }
 
-void SettingWifi::on_Clean_clicked()
-{
-    QFile file(CommandList[ListType::WifiSetting]);
-    file.resize(0);
-    qDebug("clean file finished");
-}
 
 void SettingWifi::on_Cancel_clicked()
 {
@@ -292,6 +416,7 @@ void SettingWifi::on_OK_clicked()
     SettingCommand();
     GetAllSSID();
 }
+
 
 void SettingWifi::on_Update_clicked()
 {
@@ -684,5 +809,9 @@ void SettingWifi::RewriteNetworkLog()
     out<<"NetworkMode: "<<_currentMode;
     file.close();
 }
+
+
+
+
 
 
