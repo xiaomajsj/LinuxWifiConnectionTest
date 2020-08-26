@@ -36,7 +36,7 @@ static const QString CommandList[]={
 };
 
 static const QString filePath[]={
-"E:/QT Project/build-LinuxWifiSetting-Desktop_Qt_5_14_0_MinGW_64_bit-Debug/bin/LOG"
+"LOG/"
 
 };
 

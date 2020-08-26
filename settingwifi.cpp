@@ -7,10 +7,10 @@ SettingWifi::SettingWifi(QWidget *parent)
 {
     ui->setupUi(this);
     ui->InputWidget->hide();
-    mutex=new QMutex;
-    InitialClock();
+     mutex=new QMutex;
+     InitialClock();
 
-    ReadNetworkLog();
+     ReadNetworkLog();
     if(_currentMode=="Wifi"){ui->wifiButton->setChecked(true);
     ConnectWifi();
     }
@@ -768,6 +768,7 @@ void SettingWifi::ReadNetworkLog()
     {
       file.close();
       _currentMode="Wifi";
+      locker.unlock();
       RewriteNetworkLog();
       return;
     }
@@ -794,9 +795,10 @@ void SettingWifi::ReadNetworkLog()
 void SettingWifi::RewriteNetworkLog()
 {
 
+    QDir dir("LOG/");
     QString fileName;
     fileName="NetworkMode.txt";
-    QFile file("LOG/"+fileName);
+    QFile file(dir.filePath(fileName));
     if(!file.open(QIODevice::ReadWrite | QIODevice::Text))
     {qDebug("fail to open");
         msgboxUpdate.setText("failed to open setting file");
