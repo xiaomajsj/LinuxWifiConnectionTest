@@ -20,6 +20,8 @@ SettingWifi::SettingWifi(QWidget *parent)
 
 
     GetAllSSID();
+    GetAllLog();
+
     ui->UpdateLabel->setStyleSheet("QLabel{background-color:white;}");
 
     _blankpage= new BlankPage;
@@ -272,6 +274,7 @@ void SettingWifi::DeleteAllSSID()
 }
 void SettingWifi::on_SaveSSID_clicked()
 {
+    //save the changed content of SSID
     QString content=ui->SSIDContent->toPlainText();
     int SelectedRow=ui->SSIDList->currentRow();
     QTextStream contentStream(&content);
@@ -310,6 +313,75 @@ void SettingWifi::on_SaveSSID_clicked()
     WriteWPA(AllWPA);
     ui->TestBox2->setText(AllWPA);
     GetSSIDItemFromList(SSIDList);
+
+}
+
+
+void SettingWifi::GetAllLog()
+{
+
+    LOGDir=QDir("LOG/");
+    ChargeLogItem.clear();
+    ChargeLogList.clear();
+    QDir ChargeLogPath("LOG/");
+    QStringList ChargeLogList=ChargeLogPath.entryList(QStringList()<<"*PC_Charge.log",QDir::Files);
+    for(auto &a : ChargeLogList)
+    {
+        QListWidgetItem LogItem(a);
+        ChargeLogItem.append(LogItem);
+    }
+
+    for(auto &a : ChargeLogItem)
+    {
+        a.setSizeHint(QSize(20,20));
+        ui->LogList->addItem(&a);
+    }
+
+}
+
+
+void SettingWifi::on_DeleteLOG_clicked()
+{
+    QModelIndex index=ui->LogList->currentIndex();
+    if(index.isValid())
+    {
+        QString filename=ui->LogList->currentItem()->text();
+        ui->LogList->takeItem(ui->LogList->currentRow());
+        QFile LogFile(LOGDir.filePath(filename));
+        LogFile.remove();
+        GetAllLog();
+    }
+    else
+    {
+       qDebug("File dont exist!");
+    }
+
+}
+
+
+void SettingWifi::on_LogList_itemClicked(QListWidgetItem *item)
+{
+
+
+QModelIndex index=ui->LogList->currentIndex();
+if(index.isValid())
+    {
+       QString fileName=ui->LogList->currentItem()->text();
+       QFile LogFile(LOGDir.filePath(fileName));
+       if(!LogFile.open(QIODevice::ReadWrite | QIODevice::Text))
+       {
+           qDebug("Can not open Charge Log File");
+           msgboxUpdate.setText("Can not open Charge Log File");
+           msgboxUpdate.exec();
+           return;
+       }
+       else
+       {
+           QTextStream in(&LogFile);
+           QString content=in.readAll();
+           ui->LogContent->setText(content);
+       }
+    }
 
 }
 
@@ -811,6 +883,9 @@ void SettingWifi::RewriteNetworkLog()
     out<<"NetworkMode: "<<_currentMode;
     file.close();
 }
+
+
+
 
 
 

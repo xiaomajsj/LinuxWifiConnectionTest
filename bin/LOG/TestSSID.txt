@@ -1,0 +1,10 @@
+network={
+	ssid="radex-vergade12321"
+	#psk="Radex1789"
+	psk=2231231241248dsewq1e12hjsakdhi
+}
+network={
+	ssid="radex-vergader2223"
+	#psk="Radex16723"
+	psk=2231231241248dsewq1e12hjsakdhi
+}

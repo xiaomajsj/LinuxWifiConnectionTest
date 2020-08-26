@@ -1,0 +1,9 @@
+"24-08-2020  22:31:41" : start charging
+ConnectorId:  1
+The SOC is:  70 %
+"24-08-2020  22:38:58" : stop charging
+ConnectorId:  1
+Stop reason:  "Local"
+The SOC is:  95 %
+Charged time:  7 min
+Charged time:  4.62422 kWh

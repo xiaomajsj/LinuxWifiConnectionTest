@@ -25,6 +25,7 @@
 
 #include "blankpage.h"
 #include "ssid.h"
+#include "chargeloginfo.h"
 
 //static const QString WifiSettingPath = "/etc/network/interfaces";
 static const QString CommandList[]={
@@ -89,6 +90,8 @@ public:
     void WriteWPA(QString content);
     void GetSSIDItemFromList(QList<SSID> list);
 
+    void GetAllLog();
+
     void WriteSetting();
     void ConnectWifi();
     void ConnectSIMCard();
@@ -142,12 +145,23 @@ private slots:
 
     void on_SaveSSID_clicked();
 
+    void on_LogList_itemClicked(QListWidgetItem *item);
+
+    void on_DeleteLOG_clicked();
+
 private:
     Ui::SettingWifi *ui;
+
+    ChargeLogInfo currentLog;
+    QDir LOGDir;
+    QList<ChargeLogInfo> ChargeLogList;
+    QList<QListWidgetItem> ChargeLogItem;
 
     SSID currentSSID;
     QList<SSID> SSIDList;
     QList<QListWidgetItem> SSIDItem;
+
+
     QString _ssid;
     QString _password;
     QString _networkMode;
