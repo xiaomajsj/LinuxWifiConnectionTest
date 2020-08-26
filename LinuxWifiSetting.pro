@@ -21,12 +21,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     blankpage.cpp \
+    chargeloginfo.cpp \
     main.cpp \
     settingwifi.cpp \
     ssid.cpp
 
 HEADERS += \
     blankpage.h \
+    chargeloginfo.h \
     settingwifi.h \
     ssid.h
 

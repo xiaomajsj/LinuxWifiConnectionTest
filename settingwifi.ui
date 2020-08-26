@@ -441,34 +441,34 @@ All</string>
      </rect>
     </property>
     <property name="title">
-     <string>Existing SIM AFN</string>
+     <string>Existing SIM APN</string>
     </property>
     <widget class="QPushButton" name="AddAPN">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>15</x>
        <y>200</y>
-       <width>61</width>
+       <width>41</width>
        <height>41</height>
       </rect>
      </property>
      <property name="text">
-      <string>Add new 
+      <string>Add 
 APN</string>
      </property>
     </widget>
     <widget class="QPushButton" name="CleanAPN">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>175</x>
        <y>200</y>
-       <width>61</width>
+       <width>41</width>
        <height>41</height>
       </rect>
      </property>
      <property name="text">
-      <string>Delele All
-APN</string>
+      <string>Delele 
+All</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="APNContent">
@@ -487,14 +487,28 @@ APN</string>
     <widget class="QPushButton" name="saveAPN">
      <property name="geometry">
       <rect>
-       <x>85</x>
+       <x>125</x>
        <y>200</y>
-       <width>61</width>
+       <width>41</width>
        <height>41</height>
       </rect>
      </property>
      <property name="text">
       <string>Save</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="DeleteAPN">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>200</y>
+       <width>41</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete 
+APN</string>
      </property>
     </widget>
    </widget>
@@ -545,13 +559,16 @@ APN</string>
        <height>271</height>
       </rect>
      </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="DeleteLOG">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>175</x>
        <y>430</y>
-       <width>61</width>
+       <width>41</width>
        <height>41</height>
       </rect>
      </property>
