@@ -26,6 +26,7 @@
 #include "blankpage.h"
 #include "ssid.h"
 #include "chargeloginfo.h"
+#include "resize.h"
 
 //static const QString WifiSettingPath = "/etc/network/interfaces";
 static const QString CommandList[]={
@@ -36,20 +37,32 @@ static const QString CommandList[]={
     "/home/root/PC-LCD/networkMode.sh simMode",
 };
 
-static const QString filePath[]={
-"LOG/"
 
+//***************careful:the filepath is defined relative, its absolute path depends on the terminal path!!!!!*********************
+
+static const QString filePath[]=
+{
+    "LOG/",
+    "etc/"
+};
+
+static const QString fileList[]=
+{
+    "wpa_supplicant.conf",
+    " ",
+    "TestSSID.txt",
 };
 
 
-static const QString CountryList[]={
- "UTC",
- "Netherlands/Amsterdam",
- "Germany/Berlin",
- "United Kingdom/London",
- "China/Peking",
- "America/New York",
- "Australis/Sydney",
+static const QString CountryList[]=
+{
+    "UTC",
+    "Netherlands/Amsterdam",
+    "Germany/Berlin",
+    "United Kingdom/London",
+    "China/Peking",
+    "America/New York",
+    "Australis/Sydney",
 };
 
 enum Country{
@@ -71,6 +84,13 @@ enum ListType{
     FourGConnect,
 };
 
+enum fileNameType{
+    SSIDConfig=0,
+    DefaultNetWorkMode,
+    TestFile,
+};
+
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class SettingWifi; }
 QT_END_NAMESPACE
@@ -82,6 +102,8 @@ class SettingWifi : public QMainWindow
 public:
     SettingWifi(QWidget *parent = nullptr);
     ~SettingWifi();
+
+    void ResizeAllObjects();
 
     void GetAllSSID();
     void BeginDeleteSSID();
@@ -125,11 +147,7 @@ private slots:
 
     void on_LastPage_clicked();
 
-    void on_connectSIM_clicked();
-
     void on_Test_clicked();
-
-    void on_BeginConnect_clicked();
 
     void UpdateFinished(int code, QProcess::ExitStatus status);
 
@@ -151,15 +169,20 @@ private slots:
 
 private:
     Ui::SettingWifi *ui;
+    Resize _resize;
+    double resizeParameterW;
+    double resizeParameterH;
 
     ChargeLogInfo currentLog;
-    QDir LOGDir;
+    QDir RootDir;
     QList<ChargeLogInfo> ChargeLogList;
     QList<QListWidgetItem> ChargeLogItem;
 
     SSID currentSSID;
     QList<SSID> SSIDList;
     QList<QListWidgetItem> SSIDItem;
+    int SSIDInputX;
+    int SSIDInputY;
 
 
     QString _ssid;
@@ -177,6 +200,8 @@ private:
 
     QProcess updateProcess;
     QString updateResult;
+    QProcess SSIDSetting;
+    QProcess WifiConnect;
 
     QMessageBox msgboxUpdate;
 

@@ -23,12 +23,14 @@ SOURCES += \
     blankpage.cpp \
     chargeloginfo.cpp \
     main.cpp \
+    resize.cpp \
     settingwifi.cpp \
     ssid.cpp
 
 HEADERS += \
     blankpage.h \
     chargeloginfo.h \
+    resize.h \
     settingwifi.h \
     ssid.h
 

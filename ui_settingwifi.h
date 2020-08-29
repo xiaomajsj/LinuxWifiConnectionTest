@@ -13,7 +13,6 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QGroupBox>
-#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -32,19 +31,12 @@ class Ui_SettingWifi
 public:
     QWidget *centralwidget;
     QWidget *InputWidget;
-    QWidget *layoutWidget;
-    QHBoxLayout *horizontalLayout_2;
-    QLabel *Password;
-    QLineEdit *PasswordInput;
-    QWidget *layoutWidget1;
-    QHBoxLayout *horizontalLayout;
     QLabel *SSID;
     QLineEdit *SSIDInput;
-    QWidget *layoutWidget2;
-    QHBoxLayout *horizontalLayout_3;
+    QLineEdit *PasswordInput;
+    QLabel *Password;
     QPushButton *OK;
     QPushButton *Cancel;
-    QLabel *label;
     QPushButton *LastPage;
     QPushButton *NextPage;
     QLineEdit *TestText;
@@ -73,8 +65,8 @@ public:
     QLineEdit *APNContent;
     QPushButton *saveAPN;
     QPushButton *DeleteAPN;
-    QPushButton *BeginConnect;
-    QPushButton *connectSIM;
+    QListWidget *APNList;
+    QLabel *APNLabel;
     QGroupBox *groupBox_6;
     QTextEdit *LogContent;
     QPushButton *DeleteLOG;
@@ -89,73 +81,38 @@ public:
     {
         if (SettingWifi->objectName().isEmpty())
             SettingWifi->setObjectName(QString::fromUtf8("SettingWifi"));
-        SettingWifi->resize(810, 762);
+        SettingWifi->resize(810, 777);
         centralwidget = new QWidget(SettingWifi);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         InputWidget = new QWidget(centralwidget);
         InputWidget->setObjectName(QString::fromUtf8("InputWidget"));
-        InputWidget->setGeometry(QRect(510, 460, 281, 151));
-        layoutWidget = new QWidget(InputWidget);
-        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 70, 261, 31));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget);
-        horizontalLayout_2->setSpacing(20);
-        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(0, 0, 29, 0);
-        Password = new QLabel(layoutWidget);
-        Password->setObjectName(QString::fromUtf8("Password"));
-
-        horizontalLayout_2->addWidget(Password);
-
-        PasswordInput = new QLineEdit(layoutWidget);
-        PasswordInput->setObjectName(QString::fromUtf8("PasswordInput"));
+        InputWidget->setGeometry(QRect(510, 40, 281, 191));
+        SSID = new QLabel(InputWidget);
+        SSID->setObjectName(QString::fromUtf8("SSID"));
+        SSID->setGeometry(QRect(20, 45, 31, 17));
+        SSIDInput = new QLineEdit(InputWidget);
+        SSIDInput->setObjectName(QString::fromUtf8("SSIDInput"));
+        SSIDInput->setGeometry(QRect(120, 41, 142, 25));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(SSIDInput->sizePolicy().hasHeightForWidth());
+        SSIDInput->setSizePolicy(sizePolicy);
+        PasswordInput = new QLineEdit(InputWidget);
+        PasswordInput->setObjectName(QString::fromUtf8("PasswordInput"));
+        PasswordInput->setGeometry(QRect(120, 101, 142, 25));
         sizePolicy.setHeightForWidth(PasswordInput->sizePolicy().hasHeightForWidth());
         PasswordInput->setSizePolicy(sizePolicy);
         PasswordInput->setEchoMode(QLineEdit::Password);
-
-        horizontalLayout_2->addWidget(PasswordInput);
-
-        layoutWidget1 = new QWidget(InputWidget);
-        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(10, 10, 261, 31));
-        horizontalLayout = new QHBoxLayout(layoutWidget1);
-        horizontalLayout->setSpacing(20);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 29, 0);
-        SSID = new QLabel(layoutWidget1);
-        SSID->setObjectName(QString::fromUtf8("SSID"));
-
-        horizontalLayout->addWidget(SSID);
-
-        SSIDInput = new QLineEdit(layoutWidget1);
-        SSIDInput->setObjectName(QString::fromUtf8("SSIDInput"));
-        sizePolicy.setHeightForWidth(SSIDInput->sizePolicy().hasHeightForWidth());
-        SSIDInput->setSizePolicy(sizePolicy);
-
-        horizontalLayout->addWidget(SSIDInput);
-
-        layoutWidget2 = new QWidget(InputWidget);
-        layoutWidget2->setObjectName(QString::fromUtf8("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(10, 120, 261, 25));
-        horizontalLayout_3 = new QHBoxLayout(layoutWidget2);
-        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
-        OK = new QPushButton(layoutWidget2);
+        Password = new QLabel(InputWidget);
+        Password->setObjectName(QString::fromUtf8("Password"));
+        Password->setGeometry(QRect(20, 105, 69, 17));
+        OK = new QPushButton(InputWidget);
         OK->setObjectName(QString::fromUtf8("OK"));
-
-        horizontalLayout_3->addWidget(OK);
-
-        Cancel = new QPushButton(layoutWidget2);
+        OK->setGeometry(QRect(20, 160, 80, 25));
+        Cancel = new QPushButton(InputWidget);
         Cancel->setObjectName(QString::fromUtf8("Cancel"));
-
-        horizontalLayout_3->addWidget(Cancel);
-
-        label = new QLabel(InputWidget);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(-20, -20, 81, 31));
+        Cancel->setGeometry(QRect(180, 160, 80, 25));
         LastPage = new QPushButton(centralwidget);
         LastPage->setObjectName(QString::fromUtf8("LastPage"));
         LastPage->setGeometry(QRect(600, 0, 71, 31));
@@ -164,10 +121,10 @@ public:
         NextPage->setGeometry(QRect(690, 0, 71, 31));
         TestText = new QLineEdit(centralwidget);
         TestText->setObjectName(QString::fromUtf8("TestText"));
-        TestText->setGeometry(QRect(510, 50, 291, 41));
+        TestText->setGeometry(QRect(510, 490, 291, 41));
         Test = new QPushButton(centralwidget);
         Test->setObjectName(QString::fromUtf8("Test"));
-        Test->setGeometry(QRect(710, 100, 91, 31));
+        Test->setGeometry(QRect(500, 0, 91, 31));
         groupBox = new QGroupBox(centralwidget);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         groupBox->setGeometry(QRect(20, 20, 231, 61));
@@ -179,35 +136,35 @@ public:
         SIMButton->setGeometry(QRect(110, 30, 82, 17));
         groupBox_2 = new QGroupBox(centralwidget);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        groupBox_2->setGeometry(QRect(20, 150, 231, 301));
+        groupBox_2->setGeometry(QRect(20, 95, 231, 361));
         AddSSID = new QPushButton(groupBox_2);
         AddSSID->setObjectName(QString::fromUtf8("AddSSID"));
         AddSSID->setEnabled(true);
-        AddSSID->setGeometry(QRect(15, 250, 41, 41));
+        AddSSID->setGeometry(QRect(15, 310, 41, 41));
         Clean = new QPushButton(groupBox_2);
         Clean->setObjectName(QString::fromUtf8("Clean"));
-        Clean->setGeometry(QRect(175, 250, 41, 41));
+        Clean->setGeometry(QRect(175, 310, 41, 41));
         SSIDList = new QListWidget(groupBox_2);
         SSIDList->setObjectName(QString::fromUtf8("SSIDList"));
-        SSIDList->setGeometry(QRect(10, 40, 211, 81));
+        SSIDList->setGeometry(QRect(10, 40, 211, 151));
         label_4 = new QLabel(groupBox_2);
         label_4->setObjectName(QString::fromUtf8("label_4"));
         label_4->setGeometry(QRect(85, 20, 61, 16));
         label_4->setAlignment(Qt::AlignCenter);
         label_5 = new QLabel(groupBox_2);
         label_5->setObjectName(QString::fromUtf8("label_5"));
-        label_5->setGeometry(QRect(90, 130, 47, 13));
+        label_5->setGeometry(QRect(90, 200, 47, 13));
         label_5->setAlignment(Qt::AlignCenter);
         DeleteSSID = new QPushButton(groupBox_2);
         DeleteSSID->setObjectName(QString::fromUtf8("DeleteSSID"));
-        DeleteSSID->setGeometry(QRect(70, 250, 41, 41));
+        DeleteSSID->setGeometry(QRect(70, 310, 41, 41));
         SSIDContent = new QTextEdit(groupBox_2);
         SSIDContent->setObjectName(QString::fromUtf8("SSIDContent"));
-        SSIDContent->setGeometry(QRect(10, 150, 211, 81));
+        SSIDContent->setGeometry(QRect(10, 220, 211, 81));
         SSIDContent->setReadOnly(false);
         SaveSSID = new QPushButton(groupBox_2);
         SaveSSID->setObjectName(QString::fromUtf8("SaveSSID"));
-        SaveSSID->setGeometry(QRect(125, 250, 41, 41));
+        SaveSSID->setGeometry(QRect(125, 310, 41, 41));
         groupBox_3 = new QGroupBox(centralwidget);
         groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
         groupBox_3->setGeometry(QRect(260, 20, 231, 111));
@@ -240,7 +197,7 @@ public:
         CleanAPN->setGeometry(QRect(175, 200, 41, 41));
         APNContent = new QLineEdit(groupBox_5);
         APNContent->setObjectName(QString::fromUtf8("APNContent"));
-        APNContent->setGeometry(QRect(10, 20, 211, 171));
+        APNContent->setGeometry(QRect(10, 160, 211, 31));
         APNContent->setReadOnly(true);
         saveAPN = new QPushButton(groupBox_5);
         saveAPN->setObjectName(QString::fromUtf8("saveAPN"));
@@ -248,12 +205,13 @@ public:
         DeleteAPN = new QPushButton(groupBox_5);
         DeleteAPN->setObjectName(QString::fromUtf8("DeleteAPN"));
         DeleteAPN->setGeometry(QRect(70, 200, 41, 41));
-        BeginConnect = new QPushButton(centralwidget);
-        BeginConnect->setObjectName(QString::fromUtf8("BeginConnect"));
-        BeginConnect->setGeometry(QRect(30, 100, 81, 31));
-        connectSIM = new QPushButton(centralwidget);
-        connectSIM->setObjectName(QString::fromUtf8("connectSIM"));
-        connectSIM->setGeometry(QRect(150, 100, 91, 31));
+        APNList = new QListWidget(groupBox_5);
+        APNList->setObjectName(QString::fromUtf8("APNList"));
+        APNList->setGeometry(QRect(10, 40, 211, 111));
+        APNLabel = new QLabel(groupBox_5);
+        APNLabel->setObjectName(QString::fromUtf8("APNLabel"));
+        APNLabel->setGeometry(QRect(85, 20, 67, 17));
+        APNLabel->setAlignment(Qt::AlignCenter);
         groupBox_6 = new QGroupBox(centralwidget);
         groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
         groupBox_6->setGeometry(QRect(260, 240, 231, 481));
@@ -277,11 +235,24 @@ public:
         label_3->setAlignment(Qt::AlignCenter);
         TestBox = new QTextEdit(centralwidget);
         TestBox->setObjectName(QString::fromUtf8("TestBox"));
-        TestBox->setGeometry(QRect(510, 140, 291, 141));
+        TestBox->setGeometry(QRect(510, 420, 291, 61));
         TestBox2 = new QTextEdit(centralwidget);
         TestBox2->setObjectName(QString::fromUtf8("TestBox2"));
-        TestBox2->setGeometry(QRect(510, 300, 291, 141));
+        TestBox2->setGeometry(QRect(510, 270, 291, 141));
         SettingWifi->setCentralWidget(centralwidget);
+        LastPage->raise();
+        NextPage->raise();
+        TestText->raise();
+        Test->raise();
+        groupBox->raise();
+        groupBox_2->raise();
+        groupBox_3->raise();
+        groupBox_4->raise();
+        groupBox_5->raise();
+        groupBox_6->raise();
+        TestBox->raise();
+        TestBox2->raise();
+        InputWidget->raise();
         statusbar = new QStatusBar(SettingWifi);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         SettingWifi->setStatusBar(statusbar);
@@ -294,11 +265,10 @@ public:
     void retranslateUi(QMainWindow *SettingWifi)
     {
         SettingWifi->setWindowTitle(QCoreApplication::translate("SettingWifi", "SettingWifi", nullptr));
-        Password->setText(QCoreApplication::translate("SettingWifi", "Password:", nullptr));
         SSID->setText(QCoreApplication::translate("SettingWifi", "Ssid:", nullptr));
+        Password->setText(QCoreApplication::translate("SettingWifi", "Password:", nullptr));
         OK->setText(QCoreApplication::translate("SettingWifi", "OK", nullptr));
         Cancel->setText(QCoreApplication::translate("SettingWifi", "Cancel", nullptr));
-        label->setText(QCoreApplication::translate("SettingWifi", "TextLabel", nullptr));
         LastPage->setText(QCoreApplication::translate("SettingWifi", "last page", nullptr));
         NextPage->setText(QCoreApplication::translate("SettingWifi", "next page", nullptr));
         Test->setText(QCoreApplication::translate("SettingWifi", "Test", nullptr));
@@ -327,8 +297,7 @@ public:
         saveAPN->setText(QCoreApplication::translate("SettingWifi", "Save", nullptr));
         DeleteAPN->setText(QCoreApplication::translate("SettingWifi", "Delete \n"
 "APN", nullptr));
-        BeginConnect->setText(QCoreApplication::translate("SettingWifi", "Connect WIFI", nullptr));
-        connectSIM->setText(QCoreApplication::translate("SettingWifi", "Connect SIM", nullptr));
+        APNLabel->setText(QCoreApplication::translate("SettingWifi", "APN List", nullptr));
         groupBox_6->setTitle(QCoreApplication::translate("SettingWifi", "Charge Log", nullptr));
         DeleteLOG->setText(QCoreApplication::translate("SettingWifi", "Delete", nullptr));
         label_2->setText(QCoreApplication::translate("SettingWifi", "Log List", nullptr));

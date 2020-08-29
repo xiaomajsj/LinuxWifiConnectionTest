@@ -6,7 +6,7 @@ BlankPage::BlankPage(QWidget *parent) :
     ui(new Ui::BlankPage)
 {
     ui->setupUi(this);
-    this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setStyleSheet("QWidget#BlankPage{border-image:url(:/image/Test.png) 0 0 0 0 stretch stretch;}");
 //       QPixmap bkgnd("url(:/image/Test.png)");

@@ -55,6 +55,7 @@ OBJECTS_DIR   = ./
 SOURCES       = blankpage.cpp \
 		chargeloginfo.cpp \
 		main.cpp \
+		resize.cpp \
 		settingwifi.cpp \
 		ssid.cpp qrc_Res.cpp \
 		moc_blankpage.cpp \
@@ -62,6 +63,7 @@ SOURCES       = blankpage.cpp \
 OBJECTS       = blankpage.o \
 		chargeloginfo.o \
 		main.o \
+		resize.o \
 		settingwifi.o \
 		ssid.o \
 		qrc_Res.o \
@@ -257,6 +259,7 @@ DIST          = ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/qt_config.prf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/toolchain.prf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -279,10 +282,12 @@ DIST          = ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/lex.prf \
 		LinuxWifiSetting.pro blankpage.h \
 		chargeloginfo.h \
+		resize.h \
 		settingwifi.h \
 		ssid.h blankpage.cpp \
 		chargeloginfo.cpp \
 		main.cpp \
+		resize.cpp \
 		settingwifi.cpp \
 		ssid.cpp
 QMAKE_TARGET  = LinuxWifiSetting
@@ -487,6 +492,7 @@ Makefile: LinuxWifiSetting.pro ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/linux-g++
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/qt_config.prf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/toolchain.prf \
 		../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -700,6 +706,7 @@ Makefile: LinuxWifiSetting.pro ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/linux-g++
 ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/qt_config.prf:
 ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/linux-g++/qmake.conf:
 ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/toolchain.prf:
 ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/default_pre.prf:
@@ -738,8 +745,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents Res.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../Qt5.14.0/5.14.0/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents blankpage.h chargeloginfo.h settingwifi.h ssid.h $(DISTDIR)/
-	$(COPY_FILE) --parents blankpage.cpp chargeloginfo.cpp main.cpp settingwifi.cpp ssid.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents blankpage.h chargeloginfo.h resize.h settingwifi.h ssid.h $(DISTDIR)/
+	$(COPY_FILE) --parents blankpage.cpp chargeloginfo.cpp main.cpp resize.cpp settingwifi.cpp ssid.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents blankpage.ui settingwifi.ui $(DISTDIR)/
 
 
@@ -1280,6 +1287,7 @@ moc_settingwifi.cpp: settingwifi.h \
 		ssid.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/QString \
 		chargeloginfo.h \
+		resize.h \
 		moc_predefs.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/bin/moc
 	/home/marty/Qt5.14.0/5.14.0/gcc_64/bin/moc $(DEFINES) --include /home/marty/QT_Projects/LinuxWifiSetting/LinuxWifiConnectionTest/moc_predefs.h -I/home/marty/Qt5.14.0/5.14.0/gcc_64/mkspecs/linux-g++ -I/home/marty/QT_Projects/LinuxWifiSetting/LinuxWifiConnectionTest -I/home/marty/Qt5.14.0/5.14.0/gcc_64/include -I/home/marty/Qt5.14.0/5.14.0/gcc_64/include/QtWidgets -I/home/marty/Qt5.14.0/5.14.0/gcc_64/include/QtGui -I/home/marty/Qt5.14.0/5.14.0/gcc_64/include/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include settingwifi.h -o moc_settingwifi.cpp
@@ -1433,7 +1441,18 @@ blankpage.o: blankpage.cpp blankpage.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qrubberband.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qframe.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qabstractitemmodel.h \
-		ui_blankpage.h
+		ui_blankpage.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/QVariant \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QApplication \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qapplication.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qeventloop.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qguiapplication.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qinputmethod.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QPushButton \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qabstractbutton.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o blankpage.o blankpage.cpp
 
 chargeloginfo.o: chargeloginfo.cpp chargeloginfo.h \
@@ -1858,10 +1877,118 @@ main.o: main.cpp settingwifi.h \
 		ssid.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/QString \
 		chargeloginfo.h \
+		resize.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QApplication \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qapplication.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qdesktopwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+
+resize.o: resize.cpp resize.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QWidget \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qwidget.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qtguiglobal.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qglobal.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qconfig.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qtcore-config.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qsysinfo.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qlogging.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qflags.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qatomic.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qmutex.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qnumeric.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qversiontagging.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qtgui-config.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qwindowdefs.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qnamespace.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qobject.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qstring.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qchar.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qbytearray.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qrefcount.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qarraydata.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qstringliteral.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qstringview.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qlist.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qalgorithms.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qiterator.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qhashfunctions.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qpair.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qvector.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qcontainertools_impl.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qpoint.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qbytearraylist.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qstringlist.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qregexp.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qstringmatcher.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qcoreevent.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qmetatype.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qobject_impl.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qmargins.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qpaintdevice.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qrect.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qsize.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qpalette.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qcolor.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qrgb.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qrgba64.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qbrush.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qmatrix.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qpolygon.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qregion.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qdatastream.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qiodevice.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qline.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qtransform.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qpainterpath.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qimage.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qpixelformat.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qpixmap.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qsharedpointer.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qshareddata.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qhash.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qfont.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qfontmetrics.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qfontinfo.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qsizepolicy.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qcursor.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qkeysequence.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qevent.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qvariant.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qmap.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qdebug.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qtextstream.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qlocale.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qset.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qurl.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qurlquery.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qfile.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/qfiledevice.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qvector2d.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtGui/qtouchdevice.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o resize.o resize.cpp
 
 settingwifi.o: settingwifi.cpp settingwifi.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QMainWindow \
@@ -2234,7 +2361,36 @@ settingwifi.o: settingwifi.cpp settingwifi.h \
 		ssid.h \
 		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/QString \
 		chargeloginfo.h \
-		ui_settingwifi.h
+		resize.h \
+		ui_settingwifi.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtCore/QVariant \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QApplication \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qapplication.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QComboBox \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qcombobox.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QGroupBox \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qgroupbox.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QHBoxLayout \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qlayout.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QLCDNumber \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qlcdnumber.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QLabel \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qlabel.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QLineEdit \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qlineedit.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QPushButton \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qpushbutton.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QRadioButton \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qradiobutton.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QStatusBar \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qstatusbar.h \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/QTextEdit \
+		../../../Qt5.14.0/5.14.0/gcc_64/include/QtWidgets/qtextedit.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o settingwifi.o settingwifi.cpp
 
 ssid.o: ssid.cpp ssid.h \
