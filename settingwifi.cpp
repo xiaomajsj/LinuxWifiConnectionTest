@@ -463,7 +463,7 @@ void SettingWifi::on_SaveSSID_clicked()
 void SettingWifi::GetAllLog()
 {
     //Go to path current->LOG/
-    QDir LOGDir(QDir::current());
+    QDir LOGDir(QCoreApplication::applicationDirPath());
     LOGDir.cd(filePath[0]);
 
     ChargeLogItem.clear();
@@ -491,7 +491,7 @@ void SettingWifi::GetAllLog()
 void SettingWifi::on_DeleteLOG_clicked()
 {
 
-    QDir LOGDir(QDir::current());
+    QDir LOGDir(QCoreApplication::applicationDirPath());
     LOGDir.cd(filePath[0]);
 
     msgboxUpdate.setText("Are you sure to delete this LOG?");
@@ -522,7 +522,7 @@ void SettingWifi::on_DeleteLOG_clicked()
 void SettingWifi::on_LogList_itemClicked(QListWidgetItem *item)
 {
 
-    QDir LOGDir(QDir::current());
+    QDir LOGDir(QCoreApplication::applicationDirPath());
     LOGDir.cd(filePath[0]);
     QModelIndex index=ui->LogList->currentIndex();
     if(index.isValid())
@@ -592,15 +592,17 @@ void SettingWifi::ConnectWifi()
 {
     //run the command in terminal to connect WIFI
     QString command=CommandList[ListType::BeginConnect];
-    //WifiConnect.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
-    //WifiConnect.start(command);
-    //WifiConnect.waitForFinished();
-    //qDebug("connect WIFI successfully");
-    //qDebug()<<"ConnectWIFI error Code: "<<WifiConnect.error();
-    //qDebug()<<"ConnectWIFI exit Status: "<<WifiConnect.exitStatus();
+    QString ProcessCommand="/home/root/PC-LCD/networkMode.sh wifiMode";
+    WifiConnect.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+    WifiConnect.setProcessChannelMode(QProcess::ForwardedChannels);
+    WifiConnect.setWorkingDirectory("/home/root/PC-LCD");
+    WifiConnect.start(ProcessCommand);
+    WifiConnect.waitForFinished();
+    qDebug()<<"ConnectWIFI error Code: "<<WifiConnect.error();
+    qDebug()<<"ConnectWIFI exit Status: "<<WifiConnect.exitStatus();
 
-    system(command.toLocal8Bit());
-    qDebug("System code start");
+//    system(command.toLocal8Bit());
+//    qDebug("System code start");
 }
 
 
