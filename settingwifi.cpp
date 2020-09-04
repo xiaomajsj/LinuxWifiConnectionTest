@@ -64,61 +64,13 @@ void SettingWifi::ResizeAllObjects()
 
     this->resize(_screenWidth,_screenHeight);
 
-
-
-    _resize.ObjectResize(ui->groupBox,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->wifiButton,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->SIMButton,resizeParameterW,resizeParameterH);
-
-    _resize.ObjectResize(ui->groupBox_2,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->SSIDList,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->SSIDContent,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->label_4,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->label_5,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->AddSSID,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->DeleteSSID,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->SaveSSID,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->Clean,resizeParameterW,resizeParameterH);
-
-    _resize.ObjectResize(ui->groupBox_5,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->APNList,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->APNLabel,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->APNContent,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->AddAPN,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->DeleteAPN,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->saveAPN,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->CleanAPN,resizeParameterW,resizeParameterH);
-
-    _resize.ObjectResize(ui->groupBox_3,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->TimeZoneCombo,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->Clock,resizeParameterW,resizeParameterH);
-
-    _resize.ObjectResize(ui->groupBox_4,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->Update,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->UpdateLabel,resizeParameterW,resizeParameterH);
-
-    _resize.ObjectResize(ui->groupBox_6,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->LogContent,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->LogList,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->DeleteLOG,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->label_2,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->label_3,resizeParameterW,resizeParameterH);
-
-    _resize.ObjectResize(ui->LastPage,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->NextPage,resizeParameterW,resizeParameterH);
-
-    _resize.ObjectResize(ui->SSIDInput,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->InputWidget,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->PasswordInput,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->OK,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->Cancel,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->SSID,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->Password,resizeParameterW,resizeParameterH);
-
-    _resize.ObjectResize(ui->Test,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->TestBox,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->TestBox2,resizeParameterW,resizeParameterH);
-    _resize.ObjectResize(ui->TestText,resizeParameterW,resizeParameterH);
+    QList<QComboBox *> comboboxs=this->findChildren<QComboBox *>();
+    QList<QWidget *> widgets=this->findChildren<QWidget *>();
+    qDebug()<<widgets;
+    for(auto &a : widgets)
+    {
+        _resize.ObjectResize(a,resizeParameterW,resizeParameterH);
+    }
 
     SSIDInputX=ui->InputWidget->x();
     SSIDInputY=ui->InputWidget->y();

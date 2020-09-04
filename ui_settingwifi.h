@@ -67,6 +67,7 @@ public:
     QPushButton *DeleteAPN;
     QListWidget *APNList;
     QLabel *APNLabel;
+    QLabel *label_6;
     QGroupBox *groupBox_6;
     QTextEdit *LogContent;
     QPushButton *DeleteLOG;
@@ -197,7 +198,7 @@ public:
         CleanAPN->setGeometry(QRect(175, 200, 41, 41));
         APNContent = new QLineEdit(groupBox_5);
         APNContent->setObjectName(QString::fromUtf8("APNContent"));
-        APNContent->setGeometry(QRect(10, 160, 211, 31));
+        APNContent->setGeometry(QRect(10, 130, 211, 61));
         APNContent->setReadOnly(true);
         saveAPN = new QPushButton(groupBox_5);
         saveAPN->setObjectName(QString::fromUtf8("saveAPN"));
@@ -207,11 +208,15 @@ public:
         DeleteAPN->setGeometry(QRect(70, 200, 41, 41));
         APNList = new QListWidget(groupBox_5);
         APNList->setObjectName(QString::fromUtf8("APNList"));
-        APNList->setGeometry(QRect(10, 40, 211, 111));
+        APNList->setGeometry(QRect(10, 40, 211, 61));
         APNLabel = new QLabel(groupBox_5);
         APNLabel->setObjectName(QString::fromUtf8("APNLabel"));
         APNLabel->setGeometry(QRect(85, 20, 67, 17));
         APNLabel->setAlignment(Qt::AlignCenter);
+        label_6 = new QLabel(groupBox_5);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        label_6->setGeometry(QRect(85, 110, 67, 13));
+        label_6->setAlignment(Qt::AlignCenter);
         groupBox_6 = new QGroupBox(centralwidget);
         groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
         groupBox_6->setGeometry(QRect(260, 240, 231, 481));
@@ -272,7 +277,7 @@ public:
         LastPage->setText(QCoreApplication::translate("SettingWifi", "last page", nullptr));
         NextPage->setText(QCoreApplication::translate("SettingWifi", "next page", nullptr));
         Test->setText(QCoreApplication::translate("SettingWifi", "Test", nullptr));
-        groupBox->setTitle(QCoreApplication::translate("SettingWifi", "Default network connection mode: ", nullptr));
+        groupBox->setTitle(QCoreApplication::translate("SettingWifi", "Network connection mode: ", nullptr));
         wifiButton->setText(QCoreApplication::translate("SettingWifi", "Wifi", nullptr));
         SIMButton->setText(QCoreApplication::translate("SettingWifi", "SIM Card", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("SettingWifi", "Existing WIFI SSID and password: ", nullptr));
@@ -298,6 +303,7 @@ public:
         DeleteAPN->setText(QCoreApplication::translate("SettingWifi", "Delete \n"
 "APN", nullptr));
         APNLabel->setText(QCoreApplication::translate("SettingWifi", "APN List", nullptr));
+        label_6->setText(QCoreApplication::translate("SettingWifi", "Content", nullptr));
         groupBox_6->setTitle(QCoreApplication::translate("SettingWifi", "Charge Log", nullptr));
         DeleteLOG->setText(QCoreApplication::translate("SettingWifi", "Delete", nullptr));
         label_2->setText(QCoreApplication::translate("SettingWifi", "Log List", nullptr));

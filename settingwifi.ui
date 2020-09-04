@@ -450,9 +450,9 @@ All</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>160</y>
+       <y>130</y>
        <width>211</width>
-       <height>31</height>
+       <height>61</height>
       </rect>
      </property>
      <property name="readOnly">
@@ -492,7 +492,7 @@ APN</string>
        <x>10</x>
        <y>40</y>
        <width>211</width>
-       <height>111</height>
+       <height>61</height>
       </rect>
      </property>
     </widget>
@@ -507,6 +507,22 @@ APN</string>
      </property>
      <property name="text">
       <string>APN List</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>85</x>
+       <y>110</y>
+       <width>67</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Content</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
